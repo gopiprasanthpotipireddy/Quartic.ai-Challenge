@@ -7,7 +7,7 @@ Created on Fri Oct 19 16:58:20 2018
 #import sys
 #sys.path.append("/Quartic")
 from QuarticApi import QuarticApp as Qa
-import QaPLots as plots,QaPreprocessing as prep
+import QaPlots as plots,QaPreprocessing as prep
 from sklearn import naive_bayes,model_selection,linear_model,neighbors
 from sklearn.metrics import average_precision_score,confusion_matrix, roc_curve, auc
 Obj=Qa()
@@ -47,11 +47,14 @@ average_precision_score(y_test,y_predict)
 confusion_matrix(y_test, y_predict)
 plots.roc_binary()
 
-#knn classifier
+#knn classifier  better classifier till
 knn=neighbors.KNeighborsClassifier(n_neighbors=3)
 knn.fit(x_train,y_train)
 y_knn=knn.predict(x_test)
 average_precision_score(y_knn,y_test)
+plots.roc_binary(y_test,y_knn)
+confusion_matrix(y_test, y_knn)
+
 
 #crossvalidation cv score for naive classifier =1
 res = model_selection.cross_validate(naive_cl, x, y, cv=20)

@@ -11,7 +11,7 @@ from QuarticApi import *
 from sklearn.metrics import average_precision_score,confusion_matrix, roc_curve, auc
 import matplotlib.pyplot as plt
 
-def roc_binary(self,y_test,y_predict):
+def roc_binary(y_test,y_predict):
     
     fpr, tpr,_ = roc_curve(y_test, y_predict)
     roc_auc = auc(fpr, tpr)
