@@ -1,1 +1,1 @@
-Quartic
+Quartic.ai Challenge 
