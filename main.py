@@ -10,4 +10,3 @@ sys.path.append("/Quartic")
 from QuarticApi import *
 if __name__=="__main__":
     read_data()
-    
