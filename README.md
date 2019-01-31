@@ -1,3 +1,3 @@
 Quartic.ai Challenge 
 
-Imbalaced Binary Classification usinf imblearn python Package
+Imbalaced Binary Classification using imblearn python Package
