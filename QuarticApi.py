@@ -17,7 +17,7 @@ class QuarticApp:
         return
     
     def read_data(self):
-        file_location="/home/gopiprasanth/Desktop/Algorithmica/Quartic.ai/ds_data_big/ds_data"
+        file_location="./ds_data"
         self.train_data=pd.read_csv(os.path.join(file_location,"data_train.csv"))
         self.test_data=pd.read_csv(os.path.join(file_location,"data_test.csv"))
         #train_data.info()
@@ -34,7 +34,7 @@ class QuarticApp:
         self.im_features=[]
         self.nonim_columns=[]
         for i in range(1,len(self.train_data.columns)):
-            if self.train_data.iloc[:,i].isna().sum() == 0:
+            if self.train_data.loc[:,i].isna().sum() == 0:
                 self.nonim_columns.append(self.features[i])
             else:
                 self.im_features.append(self.features[i])
@@ -58,9 +58,8 @@ def roc_binary(y_test,y_predict):
     plt.show()    
     
     
-    
 
-    
+
     
 
 

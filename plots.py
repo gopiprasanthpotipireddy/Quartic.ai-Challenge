@@ -26,3 +26,4 @@ def roc_binary(self,y_test,y_predict):
     plt.title('ROC Curve')
     plt.legend(loc="lower right")
     plt.show()    
+    

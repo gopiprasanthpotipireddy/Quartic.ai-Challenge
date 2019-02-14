@@ -1,17 +1,13 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Nov  8 11:55:36 2018
 
-@author: gopiprasanth
-"""
 from QuarticApi import QuarticApp
 import QuarticApi as Qa
-from imblearn.over_sampling import RandomOverSampler
+from imblearn.over_sampling import RandomOverSampler,SMOTE,ADASYN
 from sklearn.svm import LinearSVC
 from sklearn import model_selection
 from sklearn.metrics import average_precision_score,confusion_matrix,precision_recall_curve,f1_score,precision_recall_fscore_support
-
+from sklearn.model_selection import GridSearchCV
+import numpy as np
 import os
 import pandas as pd
 Obj=QuarticApp()
@@ -34,15 +30,23 @@ Obj.nonim_columns.remove('target')
 x=train_data[Obj.nonim_columns]
 y=train_data["target"]
 
+SMOTE_Sampler=SMOTE()
+x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.5, random_state=42)
+x_resampled, y_resampled = SMOTE_Sampler.fit_resample(x_train, y_train)
 
-#Random Oversampling
-ros = RandomOverSampler(random_state=0)
 
-x_resampled, y_resampled = ros.fit_resample(x, y)
+svc=LinearSVC()
 
-cl=LinearSVC()
-x_train, x_test, y_train, y_test = model_selection.train_test_split(x_resampled, y_resampled, test_size=0.5, random_state=42)
-cl.fit(x_train,y_train)
+param_grid={
+        'C': np.linspace(1,3, 10)    
+             }
+cl=GridSearchCV(svc,param_grid,cv=5,verbose=5,n_jobs=3)
+
+cl.fit(x_resampled,y_resampled)
+cl.best_params_
+cl.best_score_
+cl.cv_results_
+#cl.fit(x_train,y_train)
 
 y_pred=cl.predict(x_test)
 confusion_matrix(y_test,y_pred)
@@ -51,16 +55,3 @@ precision_recall_curve(y_test,y_pred)
 f1_score(y_test,y_pred)
 
 roc_binary(y_test,y_pred)
-#high roc and high f1 score and the classifier is doing a good job
-
-#results feeding entire data
-cl.fit(x_resampled,y_resampled)
-Obj.nonim_columns.remove('target')
-test_sample=test_data[Obj.nonim_columns]
-
-test_data["target"]=None
-test_data["target"]=cl.predict(test_sample)
-
-file_location=""
-test_data.loc[:,['id','target']].to_csv("results.csv",index=False)
-precision_recall_fscore_support(y_test,y_pred)
